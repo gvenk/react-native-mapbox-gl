@@ -281,7 +281,12 @@ class MapView extends Component {
     if (this.props.onRegionWillChange) this.props.onRegionWillChange(event.nativeEvent.src);
   }
   _onOpenAnnotation(event: Event) {
-    if (this.props.onOpenAnnotation) this.props.onOpenAnnotation(event.nativeEvent.src);
+    // NOTE: little bit hacky way to get around issue #610
+    // https://github.com/mapbox/react-native-mapbox-gl/issues/610
+    // Don't know any other way to solve this.
+    //
+    // include nativeEvent, because we need it in the React Component
+    if (this.props.onOpenAnnotation) this.props.onOpenAnnotation(event.nativeEvent.src, event.nativeEvent);
   }
   _onCloseAnnotation(event: Event) {
     if (this.props.onCloseAnnotation) this.props.onCloseAnnotation(event.nativeEvent.src);
@@ -498,7 +503,7 @@ const Mapbox = {
   addOfflinePack,
   getOfflinePacks,
   removeOfflinePack,
-  resumeOfflinePack, 
+  resumeOfflinePack,
   suspendOfflinePack,
   addOfflinePackProgressListener,
   addOfflineMaxAllowedTilesListener,
